@@ -1,0 +1,31 @@
+phantom:
+  enabled: false
+pandora:
+  package: yandextank.plugins.Pandora
+  enabled: true
+  pandora_cmd: ./mygun
+ # Pandora executable path
+  config_content: 
+    pools:
+      - id: HTTP pool
+        gun:
+          type: mygun_name   # custom gun name (specified at `register.Gun("my_custom_gun_name", ...`)
+          target: "testnet-grpc.wavesnodes.com:6870"
+        ammo:
+          type: custom_provider
+          source:
+            type: file
+            path: ./json.ammo
+        result:
+          type: phout
+          destination: ./phout.log
+        rps: 
+          duration: 30s
+          type: line
+          from: 1
+          to: 2
+        startup:
+          type: once
+          times: 10
+#    log:
+#      level: error

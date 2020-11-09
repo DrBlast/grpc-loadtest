@@ -1,0 +1,42 @@
+phantom:
+  enabled: false
+pandora:
+  package: yandextank.plugins.Pandora
+  enabled: true
+  pandora_cmd: ./pandora/blocks_headers
+  # Pandora executable path
+  config_content:
+    pools:
+      - id: HTTP pool
+        gun:
+          type: blocks_headers_gun   # custom gun name (specified at `register.Gun("my_custom_gun_name", ...`)
+          target: "mainnet-htz-fsn1-2.wavesnodes.com:6871"
+        ammo:
+          type: custom_provider
+          source:
+            type: file
+            path: ./ammo/grpc_blocks_headers.ammo
+        result:
+          type: phout
+          destination: ./phout.log
+        rps:
+          duration: 30m
+          type: line
+          from: 5
+          to: 500
+        startup:
+          type: once
+          times: 1000
+telegraf:
+  config: monitoring.xml
+  enabled: true
+  package: yandextank.plugins.Telegraf
+uploader:
+  api_address: https://overload.yandex.net/
+  job_name: 'GRPC_BLOCKS_HEADERS_AT'
+  token_file: /home/drblast/pandora/token.txt
+  enabled: true
+  operator: drblast
+  package: yandextank.plugins.DataUploader
+
+
